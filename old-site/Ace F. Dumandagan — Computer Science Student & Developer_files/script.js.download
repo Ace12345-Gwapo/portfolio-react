@@ -1,0 +1,39 @@
+// ===== Navbar Dropdown Menu (Vanilla JavaScript) =====
+// Selects the dropdown button and dropdown menu using DOM selectors
+const dropdownButton = document.querySelector("#dropdownBtn");
+const dropdownMenu = document.querySelector("#dropdownMenu");
+
+// Toggle the dropdown open/closed when the button is clicked
+dropdownButton.addEventListener("click", function (event) {
+  // Prevent this click from being caught by the "click outside" listener below
+  event.stopPropagation();
+
+  // Show/hide the dropdown menu
+  dropdownMenu.classList.toggle("show");
+
+  // Bonus 2: flip the arrow indicator (▼ / ▲) and update aria-expanded
+  dropdownButton.classList.toggle("open");
+  const isOpen = dropdownMenu.classList.contains("show");
+  dropdownButton.setAttribute("aria-expanded", isOpen);
+});
+
+// Bonus 1: close the dropdown when the user clicks anywhere outside of it
+document.addEventListener("click", function (event) {
+  const clickedInsideDropdown =
+    dropdownButton.contains(event.target) || dropdownMenu.contains(event.target);
+
+  if (!clickedInsideDropdown && dropdownMenu.classList.contains("show")) {
+    dropdownMenu.classList.remove("show");
+    dropdownButton.classList.remove("open");
+    dropdownButton.setAttribute("aria-expanded", "false");
+  }
+});
+
+// Close the dropdown after a menu item is clicked (nice UX touch)
+dropdownMenu.querySelectorAll("a").forEach(function (link) {
+  link.addEventListener("click", function () {
+    dropdownMenu.classList.remove("show");
+    dropdownButton.classList.remove("open");
+    dropdownButton.setAttribute("aria-expanded", "false");
+  });
+});
